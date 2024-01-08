@@ -1,8 +1,7 @@
 require("dotenv").config();
 const masto = require("masto");
 const recipes = require("./recipes");
-
-const fetch = (...args) => import("node-fetch").then(({ default: fetch }) => fetch(...args));
+const fetch = require("node-fetch");
 
 if (!globalThis.fetch) {
   globalThis.fetch = fetch;
