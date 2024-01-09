@@ -23,7 +23,7 @@ $ npm run toot-recipe
 
 ## Déployer et héberger
 
-Il vous faut disposer d'un hébergement qui vous permet de plannifier des tâches — par exemple via [crontab](https://fr.wikipedia.org/wiki/Cron) — comme l'excellente plateforme [AlwaysData](https://www.alwaysdata.com/fr/), puis de plannifier l'exécution de la commande précédente à l'intervalle de votre choix.
+Il vous faut disposer d'un hébergement qui vous permet de planifier des tâches — par exemple via [crontab](https://fr.wikipedia.org/wiki/Cron) — comme l'excellente plateforme [AlwaysData](https://www.alwaysdata.com/fr/), puis de programmer l'exécution de la commande précédente à l'intervalle de votre choix.
 
 ## Licence
 
