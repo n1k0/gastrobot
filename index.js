@@ -1,13 +1,6 @@
 require("dotenv").config();
 const masto = require("masto");
 const recipes = require("./recipes");
-const fetch = require("node-fetch");
-
-if (!globalThis.fetch) {
-  globalThis.fetch = fetch;
-  globalThis.Headers = fetch.Headers;
-  globalThis.Request = fetch.Request;
-}
 
 const client = masto.createRestAPIClient({
   url: process.env.URL,

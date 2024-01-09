@@ -6,16 +6,16 @@
   "private": true,
   "license": "MIT",
   "engines": {
-    "node": ">= 16.0.0",
-    "npm": ">= 6.0.0"
+    "node": ">= 18.18.2",
+    "npm": ">= 8.0.0"
   },
-  "homepage": "",
+  "homepage": "https://piaille.fr/@gastrobot",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/n1k0/gastrobot.git"
   },
-  "bugs": "",
-  "keywords": [],
+  "bugs": "https://github.com/n1k0/gastrobot/issues",
+  "keywords": ["mastodon", "bot", "mastodon-bot"],
   "author": {
     "name": "Nicolas Perriault",
     "email": "nicolas+gastrobot@perriault.net",
@@ -28,7 +28,6 @@
   },
   "dependencies": {
     "dotenv": "^16.3.1",
-    "masto": "^6.5.2",
-    "node-fetch": "^2.7.0"
+    "masto": "^6.5.2"
   }
 }
