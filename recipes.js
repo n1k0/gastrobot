@@ -711,7 +711,7 @@ const ingredients = [
   ["Scarmoza", "de", "à la"],
   ["Scarole", "de", "à la"],
   ["Schnitzel", "de", null],
-  ["Sèche", "de", null],
+  ["Seiche", "de", null],
   ["Sel & Poivre", null, "au"],
   ["Sel himalayen", null, "au"],
   ["Serrano", "de", "au"],
