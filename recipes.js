@@ -663,7 +663,7 @@ const ingredients = [
   ["Pecorino Stagionato", "de", "au"],
   ["Pépites de Foie Gras", "de", "aux"],
   ["Persil tubéreux", "de", "au"],
-  ["Petit Boudins Antillais", "de", "aux"],
+  ["Petits Boudins Antillais", "de", "aux"],
   ["Petites rattes du Touquet", "de", "aux"],
   ["Petits oignons nouveaux", "de", "aux"],
   ["Petits pois", "de", "aux"],
@@ -683,7 +683,7 @@ const ingredients = [
   ["Pintade", "de", null],
   ["Pissenlit", "de", "au"],
   ["Pistaches", null, "aux"],
-  ["Pitaya", "de", "à la"],
+  ["Pitayas", "de", "aux"],
   ["Plat de côte", "de", null],
   ["Poire tapée", null, "à la"],
   ["Poireaux", "de", "aux"],
@@ -851,17 +851,24 @@ function pickOne(list, exclude = []) {
   return exclude.includes(pick) ? pickOne(list, pick) : pick;
 }
 
-function format(k, i1, i2) {
-  return !i1[1] || !i2[2]
-    ? null
-    : `${k} ${i1[1]} ${i1[0]} ${i2[2]} ${i2[0]}`.replaceAll("' ", "’").replaceAll("'", "’");
+function format(k, i1, i2, i3) {
+  if (!i1[1] || !i2[2] || !i3[2]) {
+    return null;
+  } else {
+    const part = Math.random() > 0.2 ? ` ${i3[2]} ` : " ";
+    const full = Math.random() > 0.6 ? ` et${part}${i3[0]}` : "";
+    return `${k} ${i1[1]} ${i1[0]} ${i2[2]} ${i2[0]}${full}`
+      .replaceAll("' ", "’")
+      .replaceAll("'", "’");
+  }
 }
 
 function run() {
   const k = pickOne(kinds);
   const i1 = pickOne(ingredients);
   const i2 = pickOne(ingredients, [i1]);
-  const recipe = format(k, i1, i2);
+  const i3 = pickOne(ingredients, [i1, i2]);
+  const recipe = format(k, i1, i2, i3);
   return recipe ? recipe : run();
 }
 
