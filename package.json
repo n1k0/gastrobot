@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "A mastodon bot posting silly recipes in French, daily.",
   "main": "index.js",
+  "type": "module",
   "private": true,
   "license": "MIT",
   "engines": {
@@ -27,6 +28,7 @@
   },
   "contributors": [],
   "scripts": {
+    "start": "npx http-server .",
     "toot-recipe": "node index.js",
     "test": "exit 0"
   },
@@ -34,5 +36,8 @@
     "dotenv": "^16.3.1",
     "masto": "^6.5.2",
     "openai": "^4.24.7"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
   }
 }

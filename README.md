@@ -29,6 +29,14 @@ $ npm run toot-recipe
 
 Il vous faut disposer d'un hébergement qui vous permet de planifier des tâches — par exemple via [crontab](https://fr.wikipedia.org/wiki/Cron) — comme l'excellente plateforme [AlwaysData](https://www.alwaysdata.com/fr/), puis de programmer l'exécution de la commande précédente à l'intervalle de votre choix.
 
+## Serveur Web local
+
+Un petit serveur Web local permet de bosser sur le code de génération de recettes sans trop se prendre la tête:
+
+```
+$ npm run serve
+```
+
 ## Licence
 
 MIT

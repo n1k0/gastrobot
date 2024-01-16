@@ -845,10 +845,10 @@ const ingredients = [
   ["Za’atar", null, "au"],
 ];
 
-function pickOne(list, exclude = null) {
+function pickOne(list, exclude = []) {
   const idx = parseInt(Math.floor(Math.random() * list.length), 10);
   const pick = list[idx];
-  return exclude && pick === exclude ? pickOne(list, pick) : pick;
+  return exclude.includes(pick) ? pickOne(list, pick) : pick;
 }
 
 function format(k, i1, i2) {
@@ -860,9 +860,11 @@ function format(k, i1, i2) {
 function run() {
   const k = pickOne(kinds);
   const i1 = pickOne(ingredients);
-  const i2 = pickOne(ingredients, i1);
+  const i2 = pickOne(ingredients, [i1]);
   const recipe = format(k, i1, i2);
   return recipe ? recipe : run();
 }
 
-module.exports = { run };
+export default {
+  run,
+};

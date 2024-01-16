@@ -1,9 +1,10 @@
-require("dotenv").config();
-const masto = require("masto");
-const { OpenAI } = require("openai");
-const recipes = require("./recipes");
+import "dotenv/config";
 
-const client = masto.createRestAPIClient({
+import { createRestAPIClient } from "masto";
+import { OpenAI } from "openai";
+import recipes from "./recipes.js";
+
+const client = createRestAPIClient({
   url: process.env.URL,
   accessToken: process.env.TOKEN,
 });
