@@ -1,0 +1,27 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Le GastroBot™</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1><q>Chargement…</q></h1>
+  <button>Je ne suis point sustenté</button>
+  <script type="module">
+  import recipes from '../recipes.js';
+
+  const button = document.querySelector('button');
+
+  function main() {
+    const h1 = document.querySelector("h1");
+    h1.classList.remove("shake");
+    void h1.offsetWidth;
+    h1.classList.add("shake");
+    h1.querySelector("q").innerText = recipes.run();
+  }
+
+  document.querySelector("button").addEventListener("click", main);
+
+  main();
+  </script>
+</html>
