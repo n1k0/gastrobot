@@ -304,7 +304,6 @@ const ingredients = [
   ["Beaufort", "de", "au"],
   ["Bergamotte", "de", "à la"],
   ["Betteraves", "de", "aux"],
-  ["Beurre au citron", null, "au"],
   ["Beurre blanc miso", null, "au"],
   ["Beurre salé", null, "au"],
   ["Biche", "de", null],
@@ -354,6 +353,7 @@ const ingredients = [
   ["Cerf", "de", null],
   ["Cerfeuil tubéreux", null, "au"],
   ["Cerises de Venasque", "de", "aux"],
+  ["Cerises noires d'Itxassou", "de", "aux"],
   ["Cervelas", "de", "au"],
   ["Cervelle", "de", null],
   ["Chablis", null, "au"],
@@ -424,11 +424,11 @@ const ingredients = [
   ["Couteaux", "de", "aux"],
   ["Crabe", "de", "au"],
   ["Crème Chantilly", null, "à la"],
-  ["Crème fraîche", null, "à la"],
   ["Crème de chou-fleur", "de", "à la"],
+  ["Crème fraîche", null, "à la"],
   ["Cresson", "de", "au"],
   ["Crevettes", "de", "aux"],
-  ["Crottin au poivre", "de", "au"],
+  ["Crottin de Chavignol", "de", "au"],
   ["Croûtons", "de", "aux"],
   ["Crustacés", "de", "aux"],
   ["Cuisses de canard", "de", null],
@@ -451,6 +451,7 @@ const ingredients = [
   ["Emmental", "d'", "à l'"],
   ["Endives caramélisées", "d'", "aux"],
   ["Eperlan", "d'", null],
+  ["Épi de maïs", "d'", null],
   ["Épices", null, "aux"],
   ["Épinards", "d'", "aux"],
   ["Épinards", "d'", "aux"],
@@ -553,6 +554,9 @@ const ingredients = [
   ["Konjac", "de", "au"],
   ["Kumquats", "de", "aux"],
   ["Lait d'amande", null, "au"],
+  ["Lait d'ânesse", "de", "au"],
+  ["Lait de brebis", "de", "au"],
+  ["Lait de chèvre", "de", "au"],
   ["Lait de coco", null, "au"],
   ["Lait de soja", null, "au"],
   ["Lait", "de", "au"],
@@ -605,7 +609,6 @@ const ingredients = [
   ["Morue", "de", "à la"],
   ["Moules marinières", "de", "aux"],
   ["Mousserons", "de", "aux"],
-  ["Moutarde au miel", null, "à la"],
   ["Moutarde de Dijon", null, "à la"],
   ["Mouton", "de", null],
   ["Mozzarella", "de", "à la"],
@@ -647,6 +650,7 @@ const ingredients = [
   ["Palourdes", "de", "aux"],
   ["Pamplemousse", "de", "au"],
   ["Panais", "de", "aux"],
+  ["Pânés de dinde", "de", null],
   ["Papaye", "de", "à la"],
   ["Paprika fumé", null, "au"],
   ["Paprika", null, "au"],
@@ -657,14 +661,13 @@ const ingredients = [
   ["Pata Negra", "de", "au"],
   ["Patates douces", "de", "aux"],
   ["Patates", "de", "aux"],
-  ["Pânés de dinde", "de", null],
   ["Pâté en croûte", "de", "au"],
   ["Pavot", null, "au"],
   ["Pecorino Stagionato", "de", "au"],
   ["Pépites de Foie Gras", "de", "aux"],
   ["Persil tubéreux", "de", "au"],
-  ["Petits Boudins Antillais", "de", "aux"],
   ["Petites rattes du Touquet", "de", "aux"],
+  ["Petits Boudins Antillais", "de", "aux"],
   ["Petits oignons nouveaux", "de", "aux"],
   ["Petits pois", "de", "aux"],
   ["Pétoncles", "de", "aux"],
@@ -746,13 +749,14 @@ const ingredients = [
   ["Riz", "de", "au"],
   ["Rocamadour", "de", "au"],
   ["Rognons", "de", "aux"],
+  ["Rollmops", "de", "aux"],
   ["Romarin", "de", "au"],
   ["Roquefort", "de", "au"],
   ["Rosette de Lyon", "de", "à la"],
   ["Rôti de dindonneau", "de", null],
   ["Rouget", "de", null],
   ["Rumsteak", "de", "au"],
-  ["Rutabagas", "de", "à la"],
+  ["Rutabagas", "de", "aux"],
   ["Safran", null, "au"],
   ["Saindoux", null, "au"],
   ["Saint-Félicien", "de", "au"],
@@ -854,8 +858,17 @@ function format(k, i1, i2, i3) {
   if (!i1[1] || !i2[2] || !i3[2]) {
     return null;
   } else {
-    const part = Math.random() > 0.2 ? ` ${i3[2]} ` : " ";
-    const full = Math.random() > 0.6 ? ` et${part}${i3[0]}` : "";
+    let customList = ["sauce", `et ${i3[2]}`];
+    if (i3[1]) {
+      customList = customList.concat([
+        `en croûte ${i3[1]}`,
+        `et éclats ${i3[1]}`,
+        `et pépites ${i3[1]}`,
+        `sur lit ${i3[1]}`,
+      ]);
+    }
+    const custom = pickOne(customList);
+    const full = Math.random() > 0.6 ? ` ${custom} ${i3[0]}` : "";
     return `${k} ${i1[1]} ${i1[0]} ${i2[2]} ${i2[0]}${full}`
       .replaceAll("' ", "’")
       .replaceAll("'", "’");
