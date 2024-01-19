@@ -14,7 +14,7 @@ const openai = new OpenAI();
 async function tootNewRecipe() {
   const recipeName = recipes.run();
   const recipeSteps = await generateRecipeSteps(recipeName);
-  const imagePrompt = `Une photo la plus réaliste possible du plat cuisiné "${recipeName}", dont la recette est "${recipeSteps}", présenté sur une table avec quelques ingrédients bruts de la recette et une partie des ustensiles nécessaires à sa réalisation disposés autour; l'arrière plan est celui de la cuisine d'un restaurant plutôt classieux et de type gastronomique. N'oublie surtout pas de bien figurer chaque élément constitutif de la recette dans le plat.`;
+  const imagePrompt = `Une photo du plat cuisiné "${recipeName}", dont la recette est "${recipeSteps}", présenté sur une table en bois rustique avec quelques ingrédients bruts de la recette et une partie des ustensiles nécessaires à sa réalisation disposés autour, sans pour autant que le plan de travail paraisse sale ou désordonné. La photo ne doit pas être prise du dessus mais plutôt en perspective cavalière en plan rapproché. N'oublie surtout pas de bien figurer chaque élément constitutif de la recette dans le plat.`;
   const imageUrl = await textToImage(imagePrompt);
   const remoteFile = await fetch(imageUrl);
   const attachment = await client.v2.media.create({
