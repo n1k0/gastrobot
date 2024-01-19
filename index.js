@@ -15,7 +15,7 @@ async function tootNewRecipe() {
   const recipeName = recipes.run();
   const recipeSteps = await generateRecipeSteps(recipeName);
   const imagePrompt = `Une photo la plus réaliste possible du plat cuisiné "${recipeName}", dont la recette est "${recipeSteps}", présenté sur une table avec quelques ingrédients bruts de la recette et une partie des ustensiles nécessaires à sa réalisation disposés autour; l'arrière plan est celui de la cuisine d'un restaurant plutôt classieux et de type gastronomique. N'oublie surtout pas de bien figurer chaque élément constitutif de la recette dans le plat.`;
-  const imageUrl = await textToImage(recipeName);
+  const imageUrl = await textToImage(imagePrompt);
   const remoteFile = await fetch(imageUrl);
   const attachment = await client.v2.media.create({
     file: await remoteFile.blob(),
