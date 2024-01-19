@@ -19,7 +19,7 @@ async function tootNewRecipe() {
   const remoteFile = await fetch(imageUrl);
   const attachment = await client.v2.media.create({
     file: await remoteFile.blob(),
-    description: imagePrompt,
+    description: recipeName,
   });
   const { url } = await client.v1.statuses.create({
     status: `${recipeName}\n\n${recipeSteps}`,
