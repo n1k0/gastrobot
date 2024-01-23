@@ -12,9 +12,14 @@ const client = createRestAPIClient({
 const openai = new OpenAI();
 
 async function tootNewRecipe() {
-  const recipeName = recipes.run();
+  const { name: recipeName, kind } = recipes.run();
+  console.debug("Recette:", recipeName);
   const recipeSteps = await generateRecipeSteps(recipeName);
-  const imagePrompt = `Une photo du plat cuisiné "${recipeName}", dont la recette est "${recipeSteps}", présenté sur une table en bois rustique avec quelques ingrédients bruts de la recette et une partie des ustensiles nécessaires à sa réalisation disposés autour, sans pour autant que le plan de travail paraisse sale ou désordonné. La photo ne doit pas être prise du dessus mais plutôt en perspective cavalière en plan rapproché. N'oublie surtout pas de bien figurer chaque élément constitutif de la recette dans le plat.`;
+  const imagePrompt = `Une photo du plat cuisiné "${recipeName}" et dont la recette est la suivante :
+
+${recipeSteps}
+
+Le cliché doit présenter le plat réalisé prêt à être servi et dégusté sur une table en bois rustique avec quelques ingrédients bruts de la recette et une partie des ustensiles nécessaires à sa réalisation disposés autour. Apporte une attention toute particulière à la restitution précise et typique du type de plat "${kind}". La photo ne doit surtout pas être prise du dessus en vue aérienne, mais plutôt en perspective cavalière et en plan rapproché de sorte à ce qu'on puisse idéalement entrepercevoir le décor que représente la cuisine en arrière plan, comme des placards ou une fenêtre.`;
   const imageUrl = await textToImage(imagePrompt);
   const remoteFile = await fetch(imageUrl);
   const attachment = await client.v2.media.create({
@@ -26,7 +31,6 @@ async function tootNewRecipe() {
     visibility: process.env.VISIBILITY,
     mediaIds: [attachment.id],
   });
-  console.debug("Image generation prompt", imagePrompt);
   console.log(`New recipe posted: ${recipeName} ${url}`);
 }
 
@@ -47,11 +51,14 @@ async function generateRecipeSteps(recipe) {
 }
 
 async function textToImage(prompt) {
+  const cleanPrompt = prompt.replaceAll("\n", " ");
+  console.debug("Image prompt: ", cleanPrompt);
   const response = await openai.images.generate({
     model: "dall-e-3",
-    prompt,
+    prompt: cleanPrompt,
     n: 1,
-    size: "1024x1024",
+    quality: "hd",
+    size: "1792x1024",
   });
   return response.data[0].url;
 }
