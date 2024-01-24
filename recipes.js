@@ -607,7 +607,6 @@ const ingredients = [
   ["Palourdes", "de", "aux"],
   ["Pamplemousse", "de", "au"],
   ["Panais", "de", "aux"],
-  ["Pânés de dinde", "de", null],
   ["Papaye", "de", "à la"],
   ["Paprika fumé", null, "au"],
   ["Paprika", null, "au"],

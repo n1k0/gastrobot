@@ -15,11 +15,7 @@ async function tootNewRecipe() {
   const { name: recipeName, kind } = recipes.run();
   console.debug("Recette:", recipeName);
   const recipeSteps = await generateRecipeSteps(recipeName);
-  const imagePrompt = `Une photo du plat cuisiné "${recipeName}" et dont la recette est la suivante :
-
-${recipeSteps}
-
-Le cliché doit présenter le plat réalisé prêt à être servi et dégusté sur une table en bois rustique avec quelques ingrédients bruts de la recette et une partie des ustensiles nécessaires à sa réalisation disposés autour. Apporte une attention toute particulière à la restitution précise et typique du type de plat "${kind}". La photo ne doit surtout pas être prise du dessus en vue aérienne, mais plutôt en perspective cavalière et en plan rapproché de sorte à ce qu'on puisse idéalement entrepercevoir le décor que représente la cuisine en arrière plan, comme des placards ou une fenêtre.`;
+  const imagePrompt = `Une photo magazine classieuse du plat “${recipeName}”`;
   const imageUrl = await textToImage(imagePrompt);
   const remoteFile = await fetch(imageUrl);
   const attachment = await client.v2.media.create({
