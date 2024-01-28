@@ -15,7 +15,7 @@ async function tootNewRecipe() {
   const { name: recipeName, kind } = recipes.run();
   console.debug("Recette:", recipeName);
   const recipeSteps = await generateRecipeSteps(recipeName);
-  const imagePrompt = `Une photo réaliste du plat gastronomique “${recipeName}” prêt à être dégusté sur une table de restaurant`;
+  const imagePrompt = `Une photo du plat “${recipeName}” et quelques ingrédients et ustensiles disposés autour`;
   const imageUrl = await textToImage(imagePrompt);
   const remoteFile = await fetch(imageUrl);
   const attachment = await client.v2.media.create({
