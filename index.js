@@ -32,7 +32,7 @@ async function tootNewRecipe() {
 
 async function generateRecipeSteps(recipe) {
   const maxLength = 500 - recipe.length - 5;
-  const recipeStepsPrompt = `Décris-moi les étapes pour réaliser la recette "${recipe}" en moins de ${maxLength} caractères`;
+  const recipeStepsPrompt = `Décris-moi la spécificité de ce plat, les ingrédients et leur quantité, le temps de préparation nécessaire et les étapes détaillées pour réaliser la recette "${recipe}", le tout en ${maxLength} caractères maximum`;
   const response = await openai.chat.completions.create({
     model: "gpt-4",
     messages: [
