@@ -4,6 +4,16 @@ import { createRestAPIClient } from "masto";
 import { OpenAI } from "openai";
 import recipes from "./recipes.js";
 
+if (!process.env.URL) {
+  throw new Error("URL is missing");
+}
+if (!process.env.TOKEN) {
+  throw new Error("TOKEN is missing");
+}
+if (!process.env.OPENAI_API_KEY) {
+  throw new Error("OPENAI_API_KEY is missing");
+}
+
 const client = createRestAPIClient({
   url: process.env.URL,
   accessToken: process.env.TOKEN,
@@ -24,7 +34,7 @@ async function tootNewRecipe() {
   });
   const { url } = await client.v1.statuses.create({
     status: `${recipeName}\n\n${recipeSteps}`,
-    visibility: process.env.VISIBILITY,
+    visibility: process.env.VISIBILITY || "direct",
     mediaIds: [attachment.id],
   });
   console.log(`New recipe posted: ${recipeName} ${url}`);
