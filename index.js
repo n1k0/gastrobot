@@ -32,12 +32,28 @@ async function tootNewRecipe() {
     file: await remoteFile.blob(),
     description: recipeName,
   });
-  const { url } = await client.v1.statuses.create({
+  const { url } = await createToot({
     status: `${recipeName}\n\n${recipeSteps}`,
     visibility: process.env.VISIBILITY || "direct",
     mediaIds: [attachment.id],
   });
   console.log(`New recipe posted: ${recipeName} ${url}`);
+}
+
+async function createToot(params, retries = 3, backoff = 500) {
+  const retryCodes = [408, 500, 502, 503, 504, 522, 524];
+  try {
+    return client.v1.statuses.create(params);
+  } catch (err) {
+    console.warn(err.message);
+    if (retries > 0 && retryCodes.includes(err.statusCode || 503)) {
+      setTimeout(() => {
+        return createToot(params, retries - 1, backoff * 2);
+      }, backoff);
+    } else {
+      throw err;
+    }
+  }
 }
 
 async function generateRecipeSteps(recipe) {
