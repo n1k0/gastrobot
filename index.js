@@ -60,7 +60,7 @@ async function generateRecipeSteps(recipe) {
   const maxLength = 500 - recipe.length - 5;
   const recipeStepsPrompt = `Décris-moi la spécificité du plat “${recipe}”, les ingrédients nécessaires et leur quantité, le temps de préparation requis et les étapes détaillées de la recette, le tout en ${maxLength} caractères maximum`;
   const response = await openai.chat.completions.create({
-    model: "gpt-4",
+    model: "gpt-4o",
     messages: [
       {
         role: "system",
