@@ -24,7 +24,7 @@ const openai = new OpenAI();
 async function tootNewRecipe() {
   const { name: recipeName, kind } = recipes.run();
   console.debug("Recette:", recipeName);
-  const recipeSteps = await generateRecipeSteps(recipeName);
+  const recipePitch = await generateRecipePitch(recipeName);
   const imagePrompt = `Photo du plat “${recipeName}”`;
   const imageUrl = await textToImage(imagePrompt);
   const remoteFile = await fetch(imageUrl);
@@ -33,7 +33,7 @@ async function tootNewRecipe() {
     description: recipeName,
   });
   const { url } = await createToot({
-    status: `${recipeName}\n\n${recipeSteps}`,
+    status: recipePitch,
     visibility: process.env.VISIBILITY || "direct",
     mediaIds: [attachment.id],
   });
@@ -56,20 +56,22 @@ async function createToot(params, retries = 3, backoff = 500) {
   }
 }
 
-async function generateRecipeSteps(recipe) {
+async function generateRecipePitch(recipe) {
   const maxLength = 500 - recipe.length - 5;
-  const recipeStepsPrompt = `Tu es un grand chef cuisinier réputé sur les réseaux sociaux. Décris-moi la spécificité et les particularités de ton dernier plat “${recipe}”, les ingrédients nécessaires et leur quantité, le temps de préparation requis et les étapes détaillées de la recette, en t'adressant au lecteur comme si tu étais un youtubeur influenceur cuisine, le tout en ${maxLength} caractères maximum`;
+  const recipePitchPrompt = `Tu es un grand chef cuisinier réputé sur les réseaux sociaux. Présente-nous les spécificités et particularités de ton dernier plat “${recipe}”, les ingrédients nécessaires et leur quantité, le temps de préparation requis et les étapes détaillées de la recette, en t'adressant à nous comme si tu étais un youtubeur influenceur cuisine, le tout en 500 caractères maximum`;
+  console.debug("Recipe pitch prompt", recipePitchPrompt);
   const response = await openai.chat.completions.create({
     model: "gpt-4o",
     messages: [
       {
         role: "system",
-        content: recipeStepsPrompt,
+        content: recipePitchPrompt,
       },
     ],
   });
-  console.debug("Recipe steps prompt", recipeStepsPrompt);
-  return response.choices[0].message.content;
+  const recipePitch = response.choices[0].message.content;
+  console.debug("Recipe pitch", recipePitch);
+  return recipePitch;
 }
 
 async function textToImage(prompt) {
