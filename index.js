@@ -58,7 +58,7 @@ async function createToot(params, retries = 3, backoff = 500) {
 
 async function generateRecipeSteps(recipe) {
   const maxLength = 500 - recipe.length - 5;
-  const recipeStepsPrompt = `Décris-moi la spécificité du plat “${recipe}”, les ingrédients nécessaires et leur quantité, le temps de préparation requis et les étapes détaillées de la recette, le tout en ${maxLength} caractères maximum`;
+  const recipeStepsPrompt = `Tu es un grand chef cuisinier réputé sur les réseaux sociaux. Décris-moi la spécificité et les particularités de ton dernier plat “${recipe}”, les ingrédients nécessaires et leur quantité, le temps de préparation requis et les étapes détaillées de la recette, en t'adressant au lecteur comme si tu étais un youtubeur influenceur cuisine, le tout en ${maxLength} caractères maximum`;
   const response = await openai.chat.completions.create({
     model: "gpt-4o",
     messages: [
