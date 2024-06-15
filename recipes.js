@@ -672,7 +672,6 @@ const ingredients = [
   ["Rascasse", "de", null, false],
   ["Ravioli", "de", "aux", false],
   ["Reblochon fermier", "de", "au", true],
-  ["Requin", "de", null, false],
   ["Rhubarbe", "de", "à la", true],
   ["Rhum", null, "au", true],
   ["Ricotta", "de", "à la", true],
@@ -762,7 +761,7 @@ const ingredients = [
   ["Tomme Crayeuse Fermière", "de", "à la", true],
   ["Tomme de Montagne", "de", "à la", true],
   ["Topinambours", "de", "aux", true],
-  ["Tortellini", "de", "aux", false],
+  ["Tortellini", "de", "aux", true],
   ["Travers de porc", "de", null, false],
   ["Tripes", "de", "aux", false],
   ["Trompettes de la mort", "de", "aux", true],
@@ -788,10 +787,10 @@ const ingredients = [
   ["Yeux de perdrix", "d'", "aux", false],
 ];
 
-function pickOne(list, exclude = []) {
-  const veggieList = list.filter(([a, b, c, v]) => v);
-  const idx = parseInt(Math.floor(Math.random() * veggieList.length), 10);
-  const pick = veggieList[idx];
+function pickOne(list, vegan, exclude = []) {
+  const ingredients = vegan ? list.filter(([a, b, c, v]) => v) : list;
+  const idx = parseInt(Math.floor(Math.random() * ingredients.length), 10);
+  const pick = ingredients[idx];
   return exclude.includes(pick) ? pickOne(list, pick) : pick;
 }
 
@@ -817,12 +816,13 @@ function format(k, i1, i2, i3) {
 }
 
 function run() {
-  const k = pickOne(kinds);
-  const i1 = pickOne(ingredients);
-  const i2 = pickOne(ingredients, [i1]);
-  const i3 = pickOne(ingredients, [i1, i2]);
-  const recipe = format(k, i1, i2, i3);
-  return recipe ? { name: recipe, kind: k } : run();
+  const kind = pickOne(kinds);
+  const vegan = Math.random() > 0.2; // ~4 generated recipes out of 5 is vegetarian
+  const i1 = pickOne(ingredients, vegan);
+  const i2 = pickOne(ingredients, vegan, [i1]);
+  const i3 = pickOne(ingredients, vegan, [i1, i2]);
+  const recipe = format(kind, i1, i2, i3);
+  return recipe ? { name: recipe, kind, vegan } : run();
 }
 
 export default {

@@ -22,22 +22,22 @@ const client = createRestAPIClient({
 const openai = new OpenAI();
 
 async function tootNewRecipe() {
-  const { name: recipeName, kind } = recipes.run();
-  console.debug("Recette:", recipeName);
-  const recipePitch = await generateRecipePitch(recipeName);
-  const imagePrompt = `Photo du plat “${recipeName}”`;
+  const recipe = recipes.run();
+  console.debug("Recette:", recipe.name);
+  const recipePitch = await generateRecipePitch(recipe);
+  const imagePrompt = `Photo du plat “${recipe.name}”`;
   const imageUrl = await textToImage(imagePrompt);
   const remoteFile = await fetch(imageUrl);
   const attachment = await client.v2.media.create({
     file: await remoteFile.blob(),
-    description: recipeName,
+    description: recipe.name,
   });
   const { url } = await createToot({
     status: recipePitch,
     visibility: process.env.VISIBILITY || "direct",
     mediaIds: [attachment.id],
   });
-  console.log(`New recipe posted: ${recipeName} ${url}`);
+  console.log(`New recipe posted: ${recipe.name} ${url}`);
 }
 
 async function createToot(params, retries = 3, backoff = 500) {
@@ -57,8 +57,12 @@ async function createToot(params, retries = 3, backoff = 500) {
 }
 
 async function generateRecipePitch(recipe) {
-  const maxLength = 500 - recipe.length - 5;
-  const recipePitchPrompt = `Tu es un grand chef cuisinier réputé sur les réseaux sociaux. Présente-nous les spécificités et particularités de ton dernier plat “${recipe}”, les ingrédients nécessaires et leur quantité, le temps de préparation requis et les étapes détaillées de la recette, en t'adressant à nous comme si tu étais un youtubeur influenceur cuisine, le tout en 500 caractères maximum`;
+  const recipePitchPrompt = `Tu es un grand chef cuisinier réputé sur les réseaux sociaux. Présente-nous
+  les spécificités et particularités de ton dernier plat ${recipe.vegan ? "végétarien" : ""}
+  "${recipe.name}", les ingrédients${recipe.vegan ? " végétariens" : ""} nécessaires et leur
+  quantité, le temps de préparation requis et les étapes détaillées de la recette, en t'adressant à
+  nous comme si tu étais un youtubeur influenceur cuisine${recipe.vegan ? " éthique" : ""}, le tout
+  en 500 caractères maximum.`;
   console.debug("Recipe pitch prompt", recipePitchPrompt);
   const response = await openai.chat.completions.create({
     model: "gpt-4o",
