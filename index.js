@@ -61,8 +61,9 @@ async function generateRecipePitch(recipe) {
   les spécificités et particularités de ton dernier plat ${recipe.vegan ? "végétarien" : ""}
   "${recipe.name}", les ingrédients${recipe.vegan ? " végétariens" : ""} nécessaires et leur
   quantité, le temps de préparation requis et les étapes détaillées de la recette, en t'adressant à
-  nous comme si tu étais un youtubeur influenceur cuisine${recipe.vegan ? " éthique" : ""}, le tout
-  en 500 caractères maximum.`;
+  nous comme si tu étais un youtubeur influenceur cuisine${
+    recipe.vegan ? " saine, éthique et responsable" : ""
+  }, le tout en 500 caractères maximum.`;
   console.debug("Recipe pitch prompt", recipePitchPrompt);
   const response = await openai.chat.completions.create({
     model: "gpt-4o",
