@@ -14,6 +14,8 @@ if (!process.env.OPENAI_API_KEY) {
   throw new Error("OPENAI_API_KEY is missing");
 }
 
+const MAX_RECIPE_PITCH_LENGTH = 666;
+
 const client = createRestAPIClient({
   url: process.env.URL,
   accessToken: process.env.TOKEN,
@@ -63,7 +65,7 @@ async function generateRecipePitch(recipe) {
   quantité, le temps de préparation requis et les étapes détaillées de la recette, en t'adressant à
   nous comme si tu étais un youtubeur influenceur cuisine${
     recipe.vegan ? " saine, éthique et responsable" : ""
-  }, le tout en strictement moins de 600 caractères.`;
+  }, le tout en strictement moins de ${MAX_RECIPE_PITCH_LENGTH} caractères.`;
   console.debug("Recipe pitch prompt", recipePitchPrompt);
   const response = await openai.chat.completions.create({
     model: "gpt-4o",
@@ -76,7 +78,12 @@ async function generateRecipePitch(recipe) {
   });
   const recipePitch = response.choices[0].message.content;
   console.debug("Recipe pitch", recipePitch);
-  return recipePitch;
+  if (recipePitch.length > MAX_RECIPE_PITCH_LENGTH) {
+    console.warn(`Pitch length exceeds ${MAX_RECIPE_PITCH_LENGTH}c., requesting a new one.`);
+    return await generateRecipePitch(recipe);
+  } else {
+    return recipePitch;
+  }
 }
 
 async function textToImage(prompt) {
