@@ -59,13 +59,17 @@ async function createToot(params, retries = 3, backoff = 500) {
 }
 
 async function generateRecipePitch(recipe) {
-  const recipePitchPrompt = `Tu es un grand chef cuisinier réputé sur les réseaux sociaux. Présente-nous
-  les spécificités et particularités de ton dernier plat ${recipe.vegan ? "végétarien" : ""}
-  "${recipe.name}", les ingrédients${recipe.vegan ? " végétariens" : ""} nécessaires et leur
-  quantité, le temps de préparation requis et les étapes détaillées de la recette, en t'adressant à
+  const recipePitchPrompt =
+    `Tu es un grand chef cuisinier réputé sur les réseaux sociaux. Présente-nous
+  les spécificités, particularités et la genèse de ton dernier plat
+  ${recipe.vegan ? "végétarien" : ""}
+  "${recipe.name}",
+  le temps de préparation requis et les étapes détaillées de la recette, en t'adressant à
   nous comme si tu étais un youtubeur influenceur cuisine${
-    recipe.vegan ? " saine, éthique et responsable" : ""
-  }, le tout en strictement moins de ${MAX_RECIPE_PITCH_LENGTH} caractères.`;
+    recipe.vegan ? " saine, équilibrée et responsable" : ""
+  }, le tout en strictement moins de ${MAX_RECIPE_PITCH_LENGTH} caractères.`
+      .replaceAll("\n", "")
+      .replaceAll("  ", " ");
   console.debug("Recipe pitch prompt", recipePitchPrompt);
   const response = await openai.chat.completions.create({
     model: "gpt-4o",
